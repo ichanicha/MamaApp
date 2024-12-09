@@ -1,0 +1,95 @@
+{# 一覧画面 #}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>投稿一覧画面</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  {% load static %}
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">投稿一覧画面</h1>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+      {% if user.is_authenticated %}
+        <a class="navbar-brand" href="{% url 'posts:post' %}">投稿</a>
+        <a class="navbar-brand" href="{% url 'posts:my_page' %}">マイページ</a>
+        <a class="navbar-brand" href="{% url 'accounts:user_logout' %}">ログアウト</a>
+      {% endif %}
+    </nav>
+
+    <!-- フィルターフォーム -->
+    <form method="get" class="mb-4">
+      <div class="form-row">
+        <!-- スポット名選択 -->
+        <div class="form-group col-md-3">
+          <label for="spot_name">スポット名</label>
+          <input type="text" name="spot_name" class="form-control" value="{{ spot_name }}">
+        </div>
+
+        <!-- 区選択 -->
+        <div class="form-group col-md-3">
+          <label for="country">区</label>
+          <select id="country" name="country" class="form-control">
+            <option value="">-----</option>
+            {% for id, name in country_choices %}
+              <option value="{{ id }}" {% if id|stringformat:"s" == country %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- 駐車場選択 -->
+        <div class="form-group col-md-3">
+          <label for="parking">駐車場</label>
+          <select id="parking" name="parking" class="form-control">
+            <option value="">-----</option>
+            {% for value, label in parking_choices %}
+              <option value="{{ value }}" {% if value == parking %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- 赤ちゃん休憩室選択 -->
+        <div class="form-group col-md-3">
+          <label for="baby_station">赤ちゃん休憩室</label>
+          <select id="baby_station" name="baby_station" class="form-control">
+            <option value="">-----</option>
+            {% for value, label in baby_station_choices %}
+              <option value="{{ value }}" {% if value == baby_station %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      
+      <!-- 絞り込みボタン -->
+      <button type="submit" class="btn btn-primary">絞り込む</button>
+    </form>
+
+    <!-- 投稿リスト -->
+    <div class="row">
+      {% for post in posts %}
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <img src="{{ post.image.image.url }}" class="card-img-top" alt="画像">
+            <div class="card-body">
+              <h5 class="card-title">{{ post.spot_name }}</h5>
+              <p class="card-text">
+                <strong>区:</strong> {{ post.country }}<br>
+                <strong>住所:</strong> {{ post.address }}<br>
+                <strong>子供入園料:</strong> ¥{{ post.free }}<br>
+                <strong>駐車場:</strong> {{ post.get_parking_display }}<br>
+                <strong>ベビー休憩室:</strong> {{ post.get_baby_station_display }}<br>
+                <strong>投稿者:</strong> {{ post.user.username }}
+              </p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

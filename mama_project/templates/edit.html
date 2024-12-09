@@ -1,0 +1,77 @@
+{#投稿編集画面#}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>投稿編集画面</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">投稿編集画面</h1>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %} <!-- セキュリティのための記述 -->
+      
+      <!-- 現在の画像を表示 -->
+      {% if form.instance.image %}
+        <div class="form-group">
+          <label>現在の画像:</label>
+          <img src="{{ form.instance.image.image.url }}" alt="現在の画像" class="img-fluid" style="max-width: 200px;">
+        </div>
+      {% endif %}
+
+      <!-- ファイルアップロードフォーム -->
+      <div class="form-group">
+        <label for="id_image">新しい画像:</label>
+        {{ form.image }}
+      </div>
+
+      <!-- その他のフォームフィールド -->
+      <div class="form-group">
+        <label for="id_spot_name">スポット名:</label>
+        {{ form.spot_name }}
+      </div>
+
+      <div class="form-group">
+        <label for="id_country">区:</label>
+        {{ form.country }}
+      </div>
+
+      <div class="form-group">
+        <label for="id_address">住所:</label>
+        {{ form.address }}
+      </div>
+
+      <div class="form-group">
+        <label for="id_free">子供入園料:</label>
+        {{ form.free }}
+      </div>
+
+      <div class="form-group">
+        <label for="id_parking">駐車場:</label>
+        {{ form.parking }}
+      </div>
+
+      <div class="form-group">
+        <label for="id_baby_station">ベビー休憩室:</label>
+        {{ form.baby_station }}
+      </div>
+
+      <div class="form-group">
+        <label for="id_other">メモ:</label>
+        {{ form.other }}
+      </div>
+
+      <!-- 更新ボタン -->
+      <button type="submit" class="btn btn-primary btn-block">更新</button>
+    </form>
+
+    <!-- 戻るボタン -->
+    <button onclick='location.href="{% url "posts:my_page" %}"' class="btn btn-secondary btn-block mt-3">戻る</button>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

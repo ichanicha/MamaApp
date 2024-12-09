@@ -1,0 +1,34 @@
+{# 削除確認画面 #}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>投稿削除確認</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">本当にこの投稿を削除しますか？</h1>
+
+        <!-- 投稿情報 -->
+        <div class="card">
+            <div class="card-body">
+                <p><strong>スポット名:</strong> {{ post.spot_name }}</p>
+                <p><strong>住所:</strong> {{ post.address }}</p>
+            </div>
+        </div>
+
+        <!-- 削除確認フォーム -->
+        <form method="POST" class="mt-4">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-block">削除</button>
+        </form>
+
+        <!-- キャンセルボタン -->
+        <a href="{% url 'posts:my_page' %}" class="btn btn-secondary btn-block mt-3">キャンセル</a> <!-- マイページに戻る -->
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
